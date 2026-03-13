@@ -4,7 +4,7 @@ import { Home, Search, PlusCircle, FileText, Bell, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navItems = [
-  { to: "/", icon: Home, label: "Home" },
+  { to: "/dashboard", icon: Home, label: "Home" },
   { to: "/search", icon: Search, label: "Search" },
   { to: "/report/lost", icon: PlusCircle, label: "Report" },
   { to: "/my-reports", icon: FileText, label: "Reports" },

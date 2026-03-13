@@ -6,18 +6,33 @@ import { Label } from "@/components/ui/label";
 import { Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [idProof, setIdProof] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!isLogin) {
+      if (password !== confirmPassword) {
+        toast({ title: "Passwords do not match", description: "Please make sure your passwords match.", variant: "destructive" });
+        return;
+      }
+      if (!idProof) {
+        toast({ title: "ID Proof Required", description: "Please upload a valid identity document.", variant: "destructive" });
+        return;
+      }
+    }
+
     setLoading(true);
 
     if (isLogin) {
@@ -25,7 +40,7 @@ const Auth = () => {
       if (error) {
         toast({ title: "Login failed", description: error.message, variant: "destructive" });
       } else {
-        navigate("/");
+        navigate("/dashboard");
       }
     } else {
       const { error } = await supabase.auth.signUp({
@@ -45,50 +60,124 @@ const Auth = () => {
     setLoading(false);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast({ title: "File too large", description: "Please upload a file smaller than 5MB.", variant: "destructive" });
+        e.target.value = "";
+        setIdProof(null);
+        return;
+      }
+      const validTypes = ["application/pdf", "image/jpeg", "image/png", "image/jpg", "image/webp"];
+      if (!validTypes.includes(file.type)) {
+        toast({ title: "Invalid file type", description: "Please upload a PDF or Image file.", variant: "destructive" });
+        e.target.value = "";
+        setIdProof(null);
+        return;
+      }
+      setIdProof(file);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="min-h-screen bg-background flex items-center justify-center px-4"
+    >
       <div className="w-full max-w-sm">
-        <div className="flex items-center justify-center gap-2 mb-8">
+        <motion.div 
+          initial={{ y: -20 }}
+          animate={{ y: 0 }}
+          className="flex items-center justify-center gap-2 mb-8"
+        >
           <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
             <Shield className="w-5 h-5 text-primary-foreground" />
           </div>
-          <h1 className="font-display text-2xl font-bold text-foreground">SafeFindr</h1>
-        </div>
+          <h1 className="font-display text-2xl font-bold text-foreground">Qivaro</h1>
+        </motion.div>
 
-        <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
-          <h2 className="font-display text-xl font-semibold text-center mb-6">
-            {isLogin ? "Welcome back" : "Create account"}
-          </h2>
+        <motion.div 
+            layout
+            className="bg-card rounded-3xl border border-border/60 p-8 shadow-xl shadow-primary/5"
+        >
+          <AnimatePresence mode="wait">
+            <motion.h2 
+              key={isLogin ? 'login-title' : 'signup-title'}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 10 }}
+              className="font-display text-2xl font-bold text-center mb-6"
+            >
+              {isLogin ? "Welcome back" : "Create account"}
+            </motion.h2>
+          </AnimatePresence>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
-              <div>
-                <Label htmlFor="name">Display name</Label>
-                <Input id="name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Your name" required />
-              </div>
-            )}
-            <div>
+            <AnimatePresence mode="wait">
+              {!isLogin && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="space-y-1.5"
+                >
+                  <Label htmlFor="name">Display name</Label>
+                  <Input id="name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} placeholder="Your name" required className="h-11 rounded-xl" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <div className="space-y-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@campus.edu" required />
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@campus.edu" required className="h-11 rounded-xl" />
             </div>
-            <div>
+            <div className="space-y-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={6} />
+              <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="h-11 rounded-xl" />
             </div>
-            <Button type="submit" className="w-full" disabled={loading}>
+            <AnimatePresence mode="wait">
+              {!isLogin && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="space-y-4 overflow-hidden"
+                >
+                  <div className="space-y-1.5">
+                    <Label htmlFor="confirmPassword">Confirm Password</Label>
+                    <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="h-11 rounded-xl" />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="idProof">Identity Proof (Aadhar/PAN/University ID)</Label>
+                    <Input 
+                      id="idProof" 
+                      type="file" 
+                      accept=".pdf,image/*"
+                      onChange={handleFileChange} 
+                      className="h-11 rounded-xl cursor-pointer file:text-primary file:font-bold file:bg-primary/10 file:text-xs file:border-0 file:rounded-lg pt-2 hover:file:bg-primary/20 transition-all text-sm" 
+                      required 
+                    />
+                    <p className="text-[10px] text-muted-foreground ml-1">Max 5MB. Supported: PDF, JPG, PNG.</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <Button type="submit" className="w-full h-11 rounded-xl font-bold mt-2" disabled={loading}>
               {loading ? "Loading..." : isLogin ? "Sign in" : "Sign up"}
             </Button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground mt-4">
+          <p className="text-center text-sm text-muted-foreground mt-6">
             {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-            <button onClick={() => setIsLogin(!isLogin)} className="text-primary font-medium hover:underline">
+            <button onClick={() => setIsLogin(!isLogin)} className="text-primary font-bold hover:underline transition-all">
               {isLogin ? "Sign up" : "Sign in"}
             </button>
           </p>
-        </div>
+        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
