@@ -14,16 +14,166 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      matches: {
+        Row: {
+          created_at: string
+          found_report_id: string
+          id: string
+          lost_report_id: string
+          score: number
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          found_report_id: string
+          id?: string
+          lost_report_id: string
+          score?: number
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          found_report_id?: string
+          id?: string
+          lost_report_id?: string
+          score?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "matches_found_report_id_fkey"
+            columns: ["found_report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "matches_lost_report_id_fkey"
+            columns: ["lost_report_id"]
+            isOneToOne: false
+            referencedRelation: "reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      reports: {
+        Row: {
+          brand: string | null
+          category: Database["public"]["Enums"]["item_category"]
+          color: string | null
+          created_at: string
+          description: string | null
+          id: string
+          location: string
+          photo_url: string | null
+          status: Database["public"]["Enums"]["report_status"]
+          title: string
+          type: Database["public"]["Enums"]["report_type"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          brand?: string | null
+          category?: Database["public"]["Enums"]["item_category"]
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location: string
+          photo_url?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          title: string
+          type: Database["public"]["Enums"]["report_type"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          brand?: string | null
+          category?: Database["public"]["Enums"]["item_category"]
+          color?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location?: string
+          photo_url?: string | null
+          status?: Database["public"]["Enums"]["report_status"]
+          title?: string
+          type?: Database["public"]["Enums"]["report_type"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      find_matches_for_report: {
+        Args: { report_id: string }
+        Returns: {
+          created_at: string
+          found_report_id: string
+          id: string
+          lost_report_id: string
+          score: number
+          status: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "matches"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
     }
     Enums: {
-      [_ in never]: never
+      item_category:
+        | "electronics"
+        | "clothing"
+        | "accessories"
+        | "books"
+        | "keys"
+        | "wallet"
+        | "bag"
+        | "id_card"
+        | "sports"
+        | "other"
+      report_status: "open" | "matched" | "resolved"
+      report_type: "lost" | "found"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +300,21 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      item_category: [
+        "electronics",
+        "clothing",
+        "accessories",
+        "books",
+        "keys",
+        "wallet",
+        "bag",
+        "id_card",
+        "sports",
+        "other",
+      ],
+      report_status: ["open", "matched", "resolved"],
+      report_type: ["lost", "found"],
+    },
   },
 } as const
