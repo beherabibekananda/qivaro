@@ -20,7 +20,6 @@ const ProfilePage = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [isVerified, setIsVerified] = useState(false); // Mock state for verification
 
   useEffect(() => {
     if (!user) return;
@@ -101,19 +100,7 @@ const ProfilePage = () => {
     }
   };
 
-  const handleDigiLockerVerification = () => {
-    toast({ 
-      title: "Redirecting to DigiLocker...", 
-      description: "You will be redirected to securely verify your Aadhaar or PAN." 
-    });
-    
-    // Simulate API redirect delay
-    setTimeout(() => {
-      window.open("https://www.digilocker.gov.in/", "_blank");
-      // In a real flow, the user would return with an auth token and we'd set this to true
-      // setIsVerified(true);
-    }, 1500);
-  };
+
 
   return (
     <div className="px-4 pt-6 pb-8">
@@ -159,46 +146,15 @@ const ProfilePage = () => {
           <Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="Optional" maxLength={20} />
         </div>
         
-        {/* Identity Verification Section */}
-        <div className="pt-4 pb-2 border-t border-border mt-6">
-          <h3 className="text-lg font-display font-semibold mb-4 text-foreground flex items-center gap-2">
-            <Shield className="w-5 h-5 text-primary" />
-            Identity Verification
-          </h3>
-          
-          <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 mb-4">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <p className="font-semibold text-foreground flex items-center gap-2">
-                  Document Verification
-                  {isVerified ? (
-                    <span className="bg-green-100 text-green-700 text-xs px-2 py-0.5 rounded-full flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3" /> Verified
-                    </span>
-                  ) : (
-                    <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded-full">
-                      Pending
-                    </span>
-                  )}
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Verify your identity using Aadhaar or PAN through DigiLocker to build trust within the community.
-                </p>
-              </div>
-            </div>
-            
-            <Button 
-              type="button" 
-              variant={isVerified ? "outline" : "default"} 
-              className="w-full sm:w-auto flex items-center gap-2"
-              onClick={handleDigiLockerVerification}
-            >
-              <img src="https://upload.wikimedia.org/wikipedia/commons/e/e9/DigiLocker_logo.svg" alt="DigiLocker" className="h-4 mr-1 opacity-90" />
-              {isVerified ? "Update Verification" : "Verify with DigiLocker"}
-              <ExternalLink className="w-4 h-4" />
-            </Button>
+        <div className="pt-2">
+          <Label className="text-muted-foreground opacity-70">LPU Registration Number</Label>
+          <div className="h-11 flex items-center px-4 bg-muted/30 border border-border/40 rounded-xl text-foreground/60 font-mono text-sm">
+            {user?.user_metadata?.registration_number || "N/A"}
           </div>
+          <p className="text-[10px] text-muted-foreground mt-1.5 ml-1">This is tied to your account for identity verification.</p>
         </div>
+        
+
 
         <Button onClick={handleSave} disabled={saving} className="w-full mt-6 rounded-xl font-bold h-11">
           {saving ? "Saving..." : "Save Profile Changes"}
@@ -212,6 +168,14 @@ const ProfilePage = () => {
           onClick={() => window.open("/terms", "_blank")}
         >
           Terms & Conditions
+        </Button>
+
+        <Button 
+          variant="outline" 
+          className="w-full h-11 rounded-xl text-muted-foreground border-border/60 hover:bg-muted font-medium"
+          onClick={() => toast({ title: "Need Help?", description: "Contact campus helpdesk at help@qivaro.lpu.in" })}
+        >
+          Help & Support
         </Button>
       
         <Button variant="outline" className="w-full text-destructive h-11 rounded-xl border-destructive/20 hover:bg-destructive/10 hover:text-destructive font-bold" onClick={signOut}>

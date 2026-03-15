@@ -15,12 +15,19 @@ const MyReports = () => {
 
   useEffect(() => {
     if (!user) return;
-    supabase
-      .from("reports")
-      .select("*")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false })
-      .then(({ data }) => setReports(data || []));
+    const fetchReports = () => {
+      supabase
+        .from("reports")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .then(({ data }) => setReports(data || []));
+    };
+
+    fetchReports();
+
+    window.addEventListener('focus', fetchReports);
+    return () => window.removeEventListener('focus', fetchReports);
   }, [user]);
 
   const lost = reports.filter((r) => r.type === "lost");

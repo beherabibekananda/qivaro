@@ -40,6 +40,10 @@ const HomePage = () => {
     };
 
     fetchActiveCases();
+
+    // Refresh when user returns to tab
+    window.addEventListener('focus', fetchActiveCases);
+    return () => window.removeEventListener('focus', fetchActiveCases);
   }, [user]);
 
   const containerVariants = {
