@@ -233,8 +233,8 @@ const IntroGridMotion = () => {
             </div>
 
             <div ref={contentRef} className="intro-content">
-                <div className="content-inner max-w-4xl mx-auto px-4 py-20 text-center">
-                    <div className="flex justify-center gap-2 mb-8">
+                <div className="content-inner w-full h-full max-w-4xl mx-auto px-4 py-8 md:py-16 flex flex-col justify-center text-center">
+                    <div className="flex justify-center gap-2 mb-6 md:mb-8 shrink-0 mt-4">
                         {steps.map((_, i) => (
                             <div 
                                 key={i} 
@@ -243,7 +243,7 @@ const IntroGridMotion = () => {
                         ))}
                     </div>
 
-                    <div className="relative overflow-hidden min-h-[450px]">
+                    <div className="relative overflow-hidden flex-1 w-full max-w-md mx-auto flex flex-col justify-center min-h-0 pb-6 md:pb-12">
                         <AnimatePresence mode="wait">
                             <motion.div 
                                 key={currentStep}
@@ -251,51 +251,58 @@ const IntroGridMotion = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.5, ease: "easeOut" }}
-                                className="step-content bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl p-10 md:p-14 shadow-[var(--gentle-shadow)] relative overflow-hidden"
+                                className="step-content bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-[2rem] p-6 md:p-12 shadow-sm relative flex flex-col justify-between"
+                                style={{ height: "100%", maxHeight: "500px" }}
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent dark:from-white/5 pointer-events-none" />
                                 
-                                <motion.h2 
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.2 }}
-                                    className="text-4xl md:text-5xl font-display font-bold mb-6 tracking-tight relative z-10"
-                                >
-                                    {steps[currentStep].title}
-                                </motion.h2>
-                                
-                                <motion.p 
-                                    initial={{ y: 20, opacity: 0 }}
-                                    animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.3 }}
-                                    className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-12 max-w-2xl mx-auto relative z-10"
-                                >
-                                    {steps[currentStep].description}
-                                </motion.p>
+                                <div className="relative z-10 shrink-0">
+                                    <motion.h2 
+                                        initial={{ y: 20, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        transition={{ delay: 0.2 }}
+                                        className="text-3xl md:text-5xl font-display font-bold mb-3 md:mb-6 tracking-tight"
+                                    >
+                                        {steps[currentStep].title}
+                                    </motion.h2>
+                                    
+                                    <motion.p 
+                                        initial={{ y: 20, opacity: 0 }}
+                                        animate={{ y: 0, opacity: 1 }}
+                                        transition={{ delay: 0.3 }}
+                                        className="text-sm md:text-xl text-muted-foreground leading-relaxed line-clamp-4 md:line-clamp-none max-w-2xl mx-auto"
+                                    >
+                                        {steps[currentStep].description}
+                                    </motion.p>
+                                </div>
                                 
                                 <motion.div 
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.4 }}
-                                    className="flex flex-wrap justify-center gap-6 md:gap-12 mb-12 relative z-10"
+                                    className="flex justify-center gap-3 md:gap-12 my-auto relative z-10"
                                 >
                                     {steps[currentStep].stats.map((stat, i) => (
-                                        <div key={i} className="stat bg-white/60 dark:bg-black/40 backdrop-blur-md border border-white/60 dark:border-white/10 rounded-2xl p-6 min-w-[160px] shadow-sm hover:-translate-y-1 transition-transform duration-300">
-                                            <span className="block text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">{stat.value}</span>
-                                            <span className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mt-2 block">{stat.label}</span>
+                                        <div key={i} className="stat bg-white/60 dark:bg-black/40 backdrop-blur-md border border-white/60 dark:border-white/10 rounded-2xl p-4 md:p-6 w-[45%] shadow-[var(--gentle-shadow)] flex flex-col justify-center">
+                                            <span className="block text-2xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">{stat.value}</span>
+                                            <span className="text-[10px] md:text-sm font-semibold text-muted-foreground uppercase tracking-widest mt-1 block">{stat.label}</span>
                                         </div>
                                     ))}
                                 </motion.div>
 
-                                <motion.button 
+                                <motion.div
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.5 }}
-                                    className="explore-button bg-primary text-primary-foreground relative z-10"
-                                    onClick={nextStep}
+                                    className="relative z-10 mt-auto shrink-0 pt-4"
                                 >
-                                    {steps[currentStep].button}
-                                </motion.button>
+                                    <button 
+                                        className="w-full explore-button shadow-xl shadow-primary/20"
+                                        onClick={nextStep}
+                                    >
+                                        {steps[currentStep].button}
+                                    </button>
+                                </motion.div>
                             </motion.div>
                         </AnimatePresence>
                     </div>

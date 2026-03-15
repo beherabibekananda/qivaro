@@ -7,8 +7,8 @@
 }
 
 .intro-container--explored {
-    height: auto;
-    overflow: visible;
+    height: 100dvh;
+    overflow: hidden;
 }
 
 .intro-grid-container {
@@ -109,12 +109,15 @@
 }
 
 .intro-subtitle {
-    font-size: 1.25rem;
+    font-size: clamp(0.8rem, 3.5vw, 1.25rem);
     color: hsl(var(--foreground));
     margin-bottom: 3rem;
-    letter-spacing: 0.25em;
+    letter-spacing: clamp(0.1em, 1.5vw, 0.25em);
     text-transform: uppercase;
     font-weight: 800;
+    text-align: center;
+    max-width: 90vw;
+    line-height: 1.5;
 }
 
 .explore-button {
@@ -143,7 +146,7 @@
 .intro-content {
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    height: 100dvh;
     background: hsl(var(--background));
     z-index: 110;
     transform: translateY(100vh);
