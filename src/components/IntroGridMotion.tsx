@@ -243,7 +243,7 @@ const IntroGridMotion = () => {
                         ))}
                     </div>
 
-                    <div className="relative overflow-hidden flex-1 w-full max-w-md mx-auto flex flex-col justify-center min-h-0 pb-6 md:pb-12">
+                    <div className="relative overflow-hidden flex-1 w-full max-w-md mx-auto flex flex-col justify-center min-h-0 pb-4 md:pb-8">
                         <AnimatePresence mode="wait">
                             <motion.div 
                                 key={currentStep}
@@ -251,17 +251,16 @@ const IntroGridMotion = () => {
                                 animate={{ opacity: 1, scale: 1 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.5, ease: "easeOut" }}
-                                className="step-content bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-[2rem] p-6 md:p-12 shadow-sm relative flex flex-col justify-between"
-                                style={{ height: "100%", maxHeight: "500px" }}
+                                className="step-content bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-[2rem] p-5 sm:p-6 md:p-10 shadow-sm relative flex flex-col w-full h-fit max-h-full overflow-y-auto no-scrollbar"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent dark:from-white/5 pointer-events-none" />
                                 
-                                <div className="relative z-10 shrink-0">
+                                <div className="relative z-10 shrink-0 mb-4 md:mb-6">
                                     <motion.h2 
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
                                         transition={{ delay: 0.2 }}
-                                        className="text-3xl md:text-5xl font-display font-bold mb-3 md:mb-6 tracking-tight"
+                                        className="text-2xl sm:text-3xl md:text-5xl font-display font-bold mb-2 md:mb-4 tracking-tight"
                                     >
                                         {steps[currentStep].title}
                                     </motion.h2>
@@ -270,7 +269,7 @@ const IntroGridMotion = () => {
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
                                         transition={{ delay: 0.3 }}
-                                        className="text-sm md:text-xl text-muted-foreground leading-relaxed line-clamp-4 md:line-clamp-none max-w-2xl mx-auto"
+                                        className="text-sm sm:text-base md:text-xl text-muted-foreground leading-snug md:leading-relaxed max-w-2xl mx-auto"
                                     >
                                         {steps[currentStep].description}
                                     </motion.p>
@@ -280,12 +279,12 @@ const IntroGridMotion = () => {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.4 }}
-                                    className="flex justify-center gap-3 md:gap-12 my-auto relative z-10"
+                                    className="grid grid-cols-2 gap-3 md:gap-6 mb-4 md:mb-8 relative z-10 shrink-0"
                                 >
                                     {steps[currentStep].stats.map((stat, i) => (
-                                        <div key={i} className="stat bg-white/60 dark:bg-black/40 backdrop-blur-md border border-white/60 dark:border-white/10 rounded-2xl p-4 md:p-6 w-[45%] shadow-[var(--gentle-shadow)] flex flex-col justify-center">
-                                            <span className="block text-2xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">{stat.value}</span>
-                                            <span className="text-[10px] md:text-sm font-semibold text-muted-foreground uppercase tracking-widest mt-1 block">{stat.label}</span>
+                                        <div key={i} className="stat bg-white/60 dark:bg-black/40 backdrop-blur-md border border-white/60 dark:border-white/10 rounded-2xl p-3 md:p-6 shadow-[var(--gentle-shadow)] flex flex-col items-center justify-center text-center">
+                                            <span className="block text-xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70 leading-none mb-1">{stat.value}</span>
+                                            <span className="text-[9px] md:text-sm font-bold text-muted-foreground uppercase tracking-widest block">{stat.label}</span>
                                         </div>
                                     ))}
                                 </motion.div>
@@ -294,10 +293,10 @@ const IntroGridMotion = () => {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.5 }}
-                                    className="relative z-10 mt-auto shrink-0 pt-4"
+                                    className="relative z-10 mt-auto shrink-0 pt-2"
                                 >
                                     <button 
-                                        className="w-full explore-button shadow-xl shadow-primary/20"
+                                        className="w-full bg-primary text-primary-foreground py-3.5 md:py-4 rounded-full font-bold shadow-xl shadow-primary/20 text-sm md:text-base tracking-widest uppercase transition-all hover:bg-primary/90 hover:scale-[1.02] active:scale-[0.98]"
                                         onClick={nextStep}
                                     >
                                         {steps[currentStep].button}
