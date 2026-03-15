@@ -224,6 +224,7 @@ const IntroGridMotion = () => {
             </div>
 
             <div className="intro-overlay">
+                <img src="/qivaro-logo.webp" alt="Qivaro" className="w-24 h-24 md:w-32 md:h-32 rounded-3xl md:rounded-[2rem] shadow-2xl mb-8 animate-in fade-in zoom-in duration-1000" />
                 <h1 className="intro-title font-display">Qivaro</h1>
                 <p className="intro-subtitle font-body">Everything lost is waiting to be found.</p>
                 <button className="explore-button" onClick={handleExplore}>
@@ -246,17 +247,19 @@ const IntroGridMotion = () => {
                         <AnimatePresence mode="wait">
                             <motion.div 
                                 key={currentStep}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
                                 transition={{ duration: 0.5, ease: "easeOut" }}
-                                className="step-content"
+                                className="step-content bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-3xl p-10 md:p-14 shadow-[var(--gentle-shadow)] relative overflow-hidden"
                             >
+                                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent dark:from-white/5 pointer-events-none" />
+                                
                                 <motion.h2 
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.2 }}
-                                    className="text-4xl md:text-6xl font-display font-bold mb-6"
+                                    className="text-4xl md:text-5xl font-display font-bold mb-6 tracking-tight relative z-10"
                                 >
                                     {steps[currentStep].title}
                                 </motion.h2>
@@ -265,21 +268,21 @@ const IntroGridMotion = () => {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.3 }}
-                                    className="text-xl text-muted-foreground leading-relaxed italic mb-12"
+                                    className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-12 max-w-2xl mx-auto relative z-10"
                                 >
-                                    "{steps[currentStep].description}"
+                                    {steps[currentStep].description}
                                 </motion.p>
                                 
                                 <motion.div 
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.4 }}
-                                    className="flex justify-center gap-12 mb-12"
+                                    className="flex flex-wrap justify-center gap-6 md:gap-12 mb-12 relative z-10"
                                 >
                                     {steps[currentStep].stats.map((stat, i) => (
-                                        <div key={i} className="stat">
-                                            <span className="block text-4xl font-bold">{stat.value}</span>
-                                            <span className="text-sm text-muted-foreground uppercase tracking-widest">{stat.label}</span>
+                                        <div key={i} className="stat bg-white/60 dark:bg-black/40 backdrop-blur-md border border-white/60 dark:border-white/10 rounded-2xl p-6 min-w-[160px] shadow-sm hover:-translate-y-1 transition-transform duration-300">
+                                            <span className="block text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">{stat.value}</span>
+                                            <span className="text-sm font-semibold text-muted-foreground uppercase tracking-widest mt-2 block">{stat.label}</span>
                                         </div>
                                     ))}
                                 </motion.div>
@@ -288,7 +291,7 @@ const IntroGridMotion = () => {
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
                                     transition={{ delay: 0.5 }}
-                                    className="explore-button bg-foreground text-background"
+                                    className="explore-button bg-primary text-primary-foreground relative z-10"
                                     onClick={nextStep}
                                 >
                                     {steps[currentStep].button}

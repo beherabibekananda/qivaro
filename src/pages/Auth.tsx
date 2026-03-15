@@ -91,12 +91,14 @@ const Auth = () => {
         <motion.div 
           initial={{ y: -20 }}
           animate={{ y: 0 }}
-          className="flex items-center justify-center gap-2 mb-8"
+          className="flex flex-col items-center justify-center gap-3 mb-8"
         >
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-            <Shield className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <h1 className="font-display text-2xl font-bold text-foreground">Qivaro</h1>
+          <img src="/qivaro-logo.webp" alt="Qivaro" className="w-20 h-20 rounded-3xl shadow-md border border-border" />
+          <h1 className="font-display text-3xl font-black text-foreground tracking-tight">Qivaro</h1>
+          <p className="text-muted-foreground text-center text-sm px-4">
+            Join the exclusive network for Lovely Professional University to track, 
+            report, and recover your lost items securely.
+          </p>
         </motion.div>
 
         <motion.div 
@@ -131,7 +133,7 @@ const Auth = () => {
             </AnimatePresence>
             <div className="space-y-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@campus.edu" required className="h-11 rounded-xl" />
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@lpu.co.in" required className="h-11 rounded-xl" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="password">Password</Label>
@@ -150,7 +152,7 @@ const Auth = () => {
                     <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="h-11 rounded-xl" />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="idProof">Identity Proof (Aadhar/PAN/University ID)</Label>
+                    <Label htmlFor="idProof">Identity Proof (Aadhaar/PAN/LPU ID)</Label>
                     <Input 
                       id="idProof" 
                       type="file" 
@@ -167,6 +169,23 @@ const Auth = () => {
             <Button type="submit" className="w-full h-11 rounded-xl font-bold mt-2" disabled={loading}>
               {loading ? "Loading..." : isLogin ? "Sign in" : "Sign up"}
             </Button>
+            
+            <AnimatePresence>
+              {!isLogin && (
+                <motion.p 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="text-[10px] text-center text-muted-foreground mt-3 leading-relaxed"
+                >
+                  By signing up, you agree to our{" "}
+                  <a href="/terms" target="_blank" className="font-bold text-primary hover:underline">
+                    Terms & Conditions
+                  </a>
+                  {" "}and confirm you understand our acceptable use policy.
+                </motion.p>
+              )}
+            </AnimatePresence>
           </form>
 
           <p className="text-center text-sm text-muted-foreground mt-6">

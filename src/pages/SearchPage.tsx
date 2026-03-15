@@ -252,75 +252,86 @@ const SearchPage = () => {
 
       <div className="px-4 pb-24">
         {/* Categories Section */}
-        {!selectedSubcategory && (
+        {!selectedCategory ? (
           <motion.div 
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             className="py-6"
           >
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4 px-1">Categories</h2>
-            <Accordion 
-              type="single" 
-              collapsible 
-              className="space-y-3"
-              value={selectedCategory || undefined}
-              onValueChange={setSelectedCategory}
-            >
+            <div className="grid grid-cols-2 gap-3">
               {searchCategories.map((cat, index) => (
                 <motion.div
                   key={cat.id}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ delay: index * 0.05 }}
                 >
-                  <AccordionItem 
-                    value={cat.id} 
-                    className="border border-border/40 rounded-2xl bg-card overflow-hidden transition-all hover:border-primary/20 shadow-sm"
+                  <button 
+                    onClick={() => {
+                        setSelectedCategory(cat.id);
+                        navigate(`/search?category=${cat.id}`, { replace: true });
+                    }}
+                    className="w-full flex items-center gap-3 p-3 lg:p-4 border border-border/40 rounded-2xl bg-card hover:border-primary/40 hover:shadow-sm transition-all text-left"
                   >
-                    <AccordionTrigger className="px-5 py-4 hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                          {cat.icon}
-                        </div>
-                        <span className="font-medium text-foreground">{cat.name}</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="px-5 pb-5">
-                      <div className="grid grid-cols-2 gap-2 mt-2">
-                        {cat.subcategories.map((sub) => (
-                          <button
-                            key={sub.name}
-                            onClick={() => handleSubcategoryClick(sub.name)}
-                            className={cn(
-                              "flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-all border",
-                              selectedSubcategory === sub.name 
-                                ? "bg-primary text-primary-foreground border-primary shadow-md transform scale-[1.02]" 
-                                : "bg-muted/30 text-muted-foreground border-transparent hover:bg-muted/80"
-                            )}
-                          >
-                            <span className="shrink-0 opacity-80">{sub.icon}</span>
-                            <span className="truncate flex-1 text-left">{sub.name}</span>
-                          </button>
-                        ))}
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                      {cat.icon}
+                    </div>
+                    <span className="font-medium text-sm text-foreground">{cat.name}</span>
+                  </button>
                 </motion.div>
               ))}
-            </Accordion>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            className="py-4"
+          >
+             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 px-1">
+                 <button 
+                   onClick={() => { 
+                       setSelectedCategory(null); 
+                       setSelectedSubcategory(null); 
+                       navigate('/search', { replace: true }); 
+                   }} 
+                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-border/60 bg-muted/30 text-xs font-semibold text-foreground hover:bg-muted/80 shrink-0 transition-colors"
+                 >
+                   <ChevronRight className="w-3.5 h-3.5 rotate-180" /> Categories
+                 </button>
+                 
+                 {searchCategories.find(c => c.id === selectedCategory)?.subcategories.map((sub) => (
+                    <button
+                      key={sub.name}
+                      onClick={() => handleSubcategoryClick(sub.name)}
+                      className={cn(
+                        "flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all border shrink-0",
+                        selectedSubcategory === sub.name 
+                          ? "bg-primary text-primary-foreground border-primary shadow-sm drop-shadow-sm" 
+                          : "bg-card text-muted-foreground border-border/60 hover:border-primary/40 hover:text-foreground"
+                      )}
+                    >
+                      <span className="opacity-80">{sub.icon}</span>
+                      <span>{sub.name}</span>
+                    </button>
+                 ))}
+             </div>
           </motion.div>
         )}
 
         {/* Results / Items Section */}
-        <div className={cn("mt-4", selectedSubcategory && "pt-2")}>
+        <div className={cn("mt-4", selectedCategory && "pt-2")}>
           <div className="flex items-center justify-between mb-4 px-1">
             <h3 className="font-semibold text-foreground flex items-center gap-2">
               {selectedSubcategory ? (
                 <>
-                  <button onClick={() => setSelectedSubcategory(null)} className="text-primary hover:underline">Items</button>
+                  <span className="text-foreground">{searchCategories.find(c => c.id === selectedCategory)?.name || "Items"}</span>
                   <ChevronRight className="w-3 h-3 text-muted-foreground" />
-                  <span className="text-muted-foreground font-normal">{selectedSubcategory}</span>
+                  <span className="text-primary font-medium">{selectedSubcategory}</span>
                 </>
+              ) : selectedCategory ? (
+                <span className="text-foreground">{searchCategories.find(c => c.id === selectedCategory)?.name} Items</span>
               ) : (
                 "Recent Items"
               )}
@@ -340,22 +351,26 @@ const SearchPage = () => {
                   exit={{ opacity: 0 }}
                   className="col-span-full py-16 text-center"
                 >
-                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto mb-4 grayscale opacity-50">
-                    <Grid3X3 className="w-8 h-8 text-muted-foreground" />
+                  <div className="bg-card border border-border/60 rounded-3xl p-6 shadow-sm max-w-sm mx-auto">
+                    <h4 className="font-display font-bold text-foreground mb-2">Didn't find what you're looking for?</h4>
+                    <p className="text-xs text-muted-foreground mb-6">Add the details of your item to our radar. We'll automatically notify you the second a match is found!</p>
+                    
+                    <div className="flex flex-col gap-3">
+                      <Button 
+                        onClick={() => navigate('/report/lost')}
+                        className="w-full rounded-xl font-bold h-11 bg-warning hover:bg-warning/90 text-warning-foreground shadow-[0_4px_14px_hsl(var(--warning)/0.25)] transition-all hover:-translate-y-0.5"
+                      >
+                        Add Lost Item Details
+                      </Button>
+                      <Button 
+                        onClick={() => navigate('/report/found')}
+                        variant="outline"
+                        className="w-full rounded-xl font-bold h-11 border-border/60 hover:bg-muted transition-all"
+                      >
+                        Register Found Item
+                      </Button>
+                    </div>
                   </div>
-                  <p className="text-muted-foreground text-sm font-medium">No items found matching your filters</p>
-                  <Button 
-                    variant="link" 
-                    className="mt-2 text-primary text-xs"
-                    onClick={() => {
-                      setQuery("");
-                      setSelectedCategory(null);
-                      setSelectedSubcategory(null);
-                      setTypeFilter("all");
-                    }}
-                  >
-                    Clear all filters
-                  </Button>
                 </motion.div>
               ) : (
                 reports.map((report, index) => (

@@ -59,13 +59,12 @@ const HomePage = () => {
         {/* Supa Sleek Header */}
         <motion.div variants={itemVariants} className="flex items-center justify-between mb-10">
           <div className="flex items-center gap-3">
-             <div className="relative flex items-center justify-center w-12 h-12 rounded-full border border-primary/30 bg-background/50 backdrop-blur-md overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-transparent" />
-                <Shield className="w-6 h-6 text-foreground drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
+             <div className="relative flex items-center justify-center w-12 h-12 rounded-xl overflow-hidden shrink-0 shadow-sm border border-foreground/5 bg-background">
+                <img src="/qivaro-logo.webp" alt="Qivaro Logo" className="w-full h-full object-cover scale-110" />
              </div>
-             <div>
+              <div>
                <h1 className="font-display text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-foreground to-foreground/50 tracking-tighter uppercase">Qivaro</h1>
-               <p className="text-[10px] tracking-widest text-primary font-bold uppercase">Campus Net</p>
+               <p className="text-[10px] tracking-widest text-primary font-bold uppercase">Network</p>
              </div>
           </div>
 
@@ -73,7 +72,7 @@ const HomePage = () => {
             <button onClick={() => navigate('/profile')} className="w-10 h-10 rounded-full border border-border/50 bg-background/50 backdrop-blur-md flex items-center justify-center hover:bg-muted transition-all">
                <User className="w-4 h-4 text-foreground/80" />
             </button>
-            <button className="w-10 h-10 rounded-full border border-border/50 bg-background/50 backdrop-blur-md flex items-center justify-center hover:bg-muted transition-all relative">
+            <button onClick={() => navigate('/notifications')} className="w-10 h-10 rounded-full border border-border/50 bg-background/50 backdrop-blur-md flex items-center justify-center hover:bg-muted transition-all relative">
                <Bell className="w-4 h-4 text-foreground/80" />
                <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full animate-ping" />
                <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
@@ -83,10 +82,7 @@ const HomePage = () => {
 
         {/* Hero Welcome */}
         <motion.div variants={itemVariants} className="mb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold mb-4">
-            <Sparkles className="w-3 h-3" />
-            <span>Simplify your discovery</span>
-          </div>
+
           <h2 className="text-5xl font-display font-black text-foreground tracking-tighter leading-[1.1]">
             Sup, {user?.user_metadata?.display_name?.split(' ')[0] || "anon"}?<br/>
             <span className="text-muted-foreground opacity-60">Lost something?</span>
@@ -151,7 +147,7 @@ const HomePage = () => {
 
         {/* Quick Tags GenZ style */}
         <motion.div variants={itemVariants} className="mb-10">
-           <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground mb-4 pl-2 opacity-70">Vibe Check</h3>
+           <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground mb-4 pl-2 opacity-70">Explore Categories</h3>
            <div className="flex flex-wrap gap-2">
              {quickCategories.map((cat) => (
                <motion.button
@@ -172,19 +168,19 @@ const HomePage = () => {
         <motion.div variants={itemVariants}>
           <button 
             onClick={() => navigate('/my-reports')}
-            className="w-full relative overflow-hidden rounded-[2rem] p-6 bg-foreground text-background border border-border group shadow-xl"
+            className="w-full relative overflow-hidden rounded-[2rem] p-6 bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 group shadow-[var(--gentle-shadow)]"
           >
-             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
              <div className="relative z-10 flex items-center justify-between">
                 <div className="text-left">
                   <div className="flex items-center gap-2 mb-2">
-                     <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Your Radar</span>
+                     <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                     <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Your Radar</span>
                   </div>
-                  <h4 className="text-2xl font-black font-display tracking-tight">0 Active Cases</h4>
+                  <h4 className="text-2xl font-black font-display tracking-tight text-foreground group-hover:text-primary transition-colors">0 Active Cases</h4>
                 </div>
-                <div className="w-12 h-12 rounded-full border border-background/20 flex items-center justify-center group-hover:rotate-12 transition-transform">
-                  <ChevronRight className="w-5 h-5 text-background" />
+                <div className="w-12 h-12 rounded-full border border-border/50 bg-background/50 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
+                  <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary-foreground transition-colors" />
                 </div>
              </div>
           </button>

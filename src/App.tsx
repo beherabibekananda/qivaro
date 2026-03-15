@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AnimatePresence } from "framer-motion";
 import AppLayout from "@/components/AppLayout";
+import ScrollToTop from "@/components/ScrollToTop";
 import Auth from "@/pages/Auth";
 import Index from "@/pages/Index";
 import HomePage from "@/pages/HomePage";
@@ -14,6 +15,8 @@ import SearchPage from "@/pages/SearchPage";
 import MyReports from "@/pages/MyReports";
 import ReportDetail from "@/pages/ReportDetail";
 import ProfilePage from "@/pages/ProfilePage";
+import NotificationsPage from "@/pages/NotificationsPage";
+import TermsPage from "@/pages/TermsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +49,8 @@ const AnimatedRoutes = () => {
         <Route path="/my-reports" element={<ProtectedRoute><MyReports /></ProtectedRoute>} />
         <Route path="/report-detail/:id" element={<ProtectedRoute><ReportDetail /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/notifications" element={<ProtectedRoute><NotificationsPage /></ProtectedRoute>} />
+        <Route path="/terms" element={<TermsPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
@@ -58,6 +63,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTop />
         <AuthProvider>
           <AnimatedRoutes />
         </AuthProvider>

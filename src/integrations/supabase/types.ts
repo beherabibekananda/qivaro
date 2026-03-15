@@ -56,6 +56,71 @@ export type Database = {
           },
         ]
       }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          match_id: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          match_id: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          match_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_match_id_fkey"
+            columns: ["match_id"]
+            isOneToOne: false
+            referencedRelation: "matches"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      notifications: {
+        Row: {
+          created_at: string
+          id: string
+          link: string | null
+          message: string
+          read: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          link?: string | null
+          message: string
+          read?: boolean
+          title: string
+          type: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          link?: string | null
+          message?: string
+          read?: boolean
+          title?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -94,11 +159,13 @@ export type Database = {
           brand: string | null
           category: Database["public"]["Enums"]["item_category"]
           color: string | null
+          contact_info: string | null
           created_at: string
           description: string | null
           id: string
           location: string
           photo_url: string | null
+          serial_number: string | null
           status: Database["public"]["Enums"]["report_status"]
           title: string
           type: Database["public"]["Enums"]["report_type"]
@@ -109,11 +176,13 @@ export type Database = {
           brand?: string | null
           category?: Database["public"]["Enums"]["item_category"]
           color?: string | null
+          contact_info?: string | null
           created_at?: string
           description?: string | null
           id?: string
           location: string
           photo_url?: string | null
+          serial_number?: string | null
           status?: Database["public"]["Enums"]["report_status"]
           title: string
           type: Database["public"]["Enums"]["report_type"]
@@ -124,11 +193,13 @@ export type Database = {
           brand?: string | null
           category?: Database["public"]["Enums"]["item_category"]
           color?: string | null
+          contact_info?: string | null
           created_at?: string
           description?: string | null
           id?: string
           location?: string
           photo_url?: string | null
+          serial_number?: string | null
           status?: Database["public"]["Enums"]["report_status"]
           title?: string
           type?: Database["public"]["Enums"]["report_type"]
