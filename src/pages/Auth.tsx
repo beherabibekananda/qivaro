@@ -14,7 +14,7 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [idProof, setIdProof] = useState<File | null>(null);
+  const [registrationNumber, setRegistrationNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -25,10 +25,6 @@ const Auth = () => {
     if (!isLogin) {
       if (password !== confirmPassword) {
         toast({ title: "Passwords do not match", description: "Please make sure your passwords match.", variant: "destructive" });
-        return;
-      }
-      if (!idProof) {
-        toast({ title: "ID Proof Required", description: "Please upload a valid identity document.", variant: "destructive" });
         return;
       }
     }
@@ -47,8 +43,11 @@ const Auth = () => {
         email,
         password,
         options: {
-          data: { display_name: displayName },
-          emailRedirectTo: window.location.origin,
+          data: { 
+            display_name: displayName,
+            registration_number: registrationNumber
+          },
+          emailRedirectTo: "https://qivarolpu.vercel.app/",
         },
       });
       if (error) {
@@ -60,25 +59,7 @@ const Auth = () => {
     setLoading(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast({ title: "File too large", description: "Please upload a file smaller than 5MB.", variant: "destructive" });
-        e.target.value = "";
-        setIdProof(null);
-        return;
-      }
-      const validTypes = ["application/pdf", "image/jpeg", "image/png", "image/jpg", "image/webp"];
-      if (!validTypes.includes(file.type)) {
-        toast({ title: "Invalid file type", description: "Please upload a PDF or Image file.", variant: "destructive" });
-        e.target.value = "";
-        setIdProof(null);
-        return;
-      }
-      setIdProof(file);
-    }
-  };
+
 
   return (
     <motion.div 
@@ -152,16 +133,17 @@ const Auth = () => {
                     <Input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" required minLength={6} className="h-11 rounded-xl" />
                   </div>
                   <div className="space-y-1.5">
-                    <Label htmlFor="idProof">Identity Proof (Aadhaar/PAN/LPU ID)</Label>
+                    <Label htmlFor="regNumber">LPU Registration Number</Label>
                     <Input 
-                      id="idProof" 
-                      type="file" 
-                      accept=".pdf,image/*"
-                      onChange={handleFileChange} 
-                      className="h-11 rounded-xl cursor-pointer file:text-primary file:font-bold file:bg-primary/10 file:text-xs file:border-0 file:rounded-lg pt-2 hover:file:bg-primary/20 transition-all text-sm" 
+                      id="regNumber" 
+                      type="text" 
+                      value={registrationNumber}
+                      onChange={(e) => setRegistrationNumber(e.target.value)}
+                      placeholder="e.g. 12012345"
+                      className="h-11 rounded-xl" 
                       required 
                     />
-                    <p className="text-[10px] text-muted-foreground ml-1">Max 5MB. Supported: PDF, JPG, PNG.</p>
+                    <p className="text-[10px] text-muted-foreground ml-1">For verifying campus identity.</p>
                   </div>
                 </motion.div>
               )}

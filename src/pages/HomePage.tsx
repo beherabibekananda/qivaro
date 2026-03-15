@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { 
   Shield, 
@@ -20,6 +22,25 @@ import { motion } from "framer-motion";
 const HomePage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [activeCases, setActiveCases] = useState(0);
+
+  useEffect(() => {
+    const fetchActiveCases = async () => {
+      if (!user) return;
+      
+      const { count } = await supabase
+        .from('reports')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('status', 'open');
+        
+      if (count !== null) {
+        setActiveCases(count);
+      }
+    };
+
+    fetchActiveCases();
+  }, [user]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -177,7 +198,7 @@ const HomePage = () => {
                      <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                      <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Your Radar</span>
                   </div>
-                  <h4 className="text-2xl font-black font-display tracking-tight text-foreground group-hover:text-primary transition-colors">0 Active Cases</h4>
+                  <h4 className="text-2xl font-black font-display tracking-tight text-foreground group-hover:text-primary transition-colors">{activeCases} Active {activeCases === 1 ? 'Case' : 'Cases'}</h4>
                 </div>
                 <div className="w-12 h-12 rounded-full border border-border/50 bg-background/50 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
                   <ChevronRight className="w-5 h-5 text-foreground group-hover:text-primary-foreground transition-colors" />
