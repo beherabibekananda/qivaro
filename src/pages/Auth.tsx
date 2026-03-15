@@ -133,7 +133,7 @@ const Auth = () => {
             </AnimatePresence>
             <div className="space-y-1.5">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@lpu.co.in" required className="h-11 rounded-xl" />
+              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@lpu.co.in or personal email" required className="h-11 rounded-xl" />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="password">Password</Label>
