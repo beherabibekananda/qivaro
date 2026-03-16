@@ -41,4 +41,5 @@ Qivaro is the premier, high-performance Lost and Found network designed exclusiv
 The project implements Row Level Security (RLS). All database interactions are governed by server-side policies ensuring that student data is protected and private by default.
 
 Version: 1.0.0
-Project Owner: Bibekananda Behera
+
+Project Owner: Bibekananda Behera And Bipasha Roy
