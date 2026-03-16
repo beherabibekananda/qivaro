@@ -54,12 +54,12 @@ const HomePage = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+    visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 30, scale: 0.95 },
-    visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 100, damping: 15 } }
+    hidden: { opacity: 0, y: 15, scale: 0.98 },
+    visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring" as const, stiffness: 200, damping: 20 } }
   };
 
   const quickCategories = [

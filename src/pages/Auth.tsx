@@ -133,12 +133,14 @@ const Auth = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
       className="min-h-screen bg-background flex items-center justify-center px-4"
     >
       <div className="w-full max-w-sm">
         <motion.div
-          initial={{ y: -20 }}
-          animate={{ y: 0 }}
+          initial={{ y: -10, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.25 }}
           className="flex flex-col items-center justify-center gap-3 mb-8"
         >
           <img

@@ -388,7 +388,7 @@ const SearchPage = () => {
                     key={report.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: Math.min(index * 0.05, 0.5) }}
+                    transition={{ delay: Math.min(index * 0.03, 0.3) }}
                     onClick={() => navigate(`/report-detail/${report.id}`)}
                     className="group flex flex-col bg-card border border-border/50 rounded-2xl overflow-hidden text-left hover:shadow-lg hover:border-primary/30 transition-all duration-300"
                   >

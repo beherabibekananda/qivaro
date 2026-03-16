@@ -256,7 +256,7 @@ const IntroGridMotion = () => {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
-                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                transition={{ duration: 0.3, ease: "easeOut" }}
                                 className="step-content bg-white/60 dark:bg-black/60 backdrop-blur-lg border border-white/50 dark:border-white/10 rounded-[2rem] p-5 sm:p-6 md:p-10 shadow-sm relative flex flex-col w-full h-fit max-h-full overflow-y-auto no-scrollbar"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent dark:from-white/5 pointer-events-none" />
@@ -265,7 +265,7 @@ const IntroGridMotion = () => {
                                     <motion.h2 
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
-                                        transition={{ delay: 0.2 }}
+                                        transition={{ delay: 0.05 }}
                                         className="text-2xl sm:text-3xl md:text-5xl font-display font-bold mb-2 md:mb-4 tracking-tight"
                                     >
                                         {steps[currentStep].title}
@@ -274,7 +274,7 @@ const IntroGridMotion = () => {
                                     <motion.p 
                                         initial={{ y: 20, opacity: 0 }}
                                         animate={{ y: 0, opacity: 1 }}
-                                        transition={{ delay: 0.3 }}
+                                        transition={{ delay: 0.1 }}
                                         className="text-sm sm:text-base md:text-xl text-muted-foreground leading-snug md:leading-relaxed max-w-2xl mx-auto"
                                     >
                                         {steps[currentStep].description}
@@ -284,7 +284,7 @@ const IntroGridMotion = () => {
                                 <motion.div 
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.4 }}
+                                    transition={{ delay: 0.15 }}
                                     className="grid grid-cols-2 gap-3 md:gap-6 mb-4 md:mb-8 relative z-10 shrink-0"
                                 >
                                     {steps[currentStep].stats.map((stat, i) => (
@@ -298,7 +298,7 @@ const IntroGridMotion = () => {
                                 <motion.div
                                     initial={{ y: 20, opacity: 0 }}
                                     animate={{ y: 0, opacity: 1 }}
-                                    transition={{ delay: 0.5 }}
+                                    transition={{ delay: 0.2 }}
                                     className="relative z-10 mt-auto shrink-0 pt-2"
                                 >
                                     <button 
