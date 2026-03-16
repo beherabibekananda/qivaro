@@ -20,9 +20,15 @@ import {
 import { motion } from "framer-motion";
 
 const HomePage = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const [activeCases, setActiveCases] = useState(0);
+
+  const getDisplayName = () => {
+    // Priority: Profile display name -> Profile username -> Metadata display name -> 'anon'
+    const name = profile?.display_name || profile?.username || user?.user_metadata?.display_name || "anon";
+    return name.split(' ')[0];
+  };
 
   useEffect(() => {
     const fetchActiveCases = async () => {
@@ -109,7 +115,7 @@ const HomePage = () => {
         <motion.div variants={itemVariants} className="mb-10">
 
           <h2 className="text-5xl font-display font-black text-foreground tracking-tighter leading-[1.1]">
-            Sup, {user?.user_metadata?.display_name?.split(' ')[0] || "anon"}?<br/>
+            Sup, {getDisplayName()}?<br/>
             <span className="text-muted-foreground opacity-60">Lost something?</span>
           </h2>
         </motion.div>

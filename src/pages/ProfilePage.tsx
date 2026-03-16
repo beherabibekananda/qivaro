@@ -11,7 +11,7 @@ import type { Tables } from "@/integrations/supabase/types";
 type Profile = Tables<"profiles">;
 
 const ProfilePage = () => {
-  const { user, signOut } = useAuth();
+  const { user, profile: contextProfile, signOut, refreshProfile } = useAuth();
   const { toast } = useToast();
   const [profile, setProfile] = useState<Profile | null>(null);
   const [displayName, setDisplayName] = useState("");
@@ -22,38 +22,56 @@ const ProfilePage = () => {
   const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
-    if (!user) return;
-    supabase.from("profiles").select("*").eq("user_id", user.id).single().then(({ data }) => {
-      if (data) {
-        setProfile(data);
-        setDisplayName(data.display_name || "");
-        setUsername(data.username || "");
-        setPhone(data.phone || "");
-        if (data.avatar_url) {
-          // Check if it's already a full URL, or just a path
-          if (data.avatar_url.startsWith("http")) {
-            setAvatarUrl(data.avatar_url);
-          } else {
-            const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(data.avatar_url);
-            setAvatarUrl(publicUrl);
-          }
+    if (contextProfile) {
+      setProfile(contextProfile);
+      setDisplayName(contextProfile.display_name || "");
+      setUsername(contextProfile.username || "");
+      setPhone(contextProfile.phone || "");
+      if (contextProfile.avatar_url) {
+        if (contextProfile.avatar_url.startsWith("http")) {
+          setAvatarUrl(contextProfile.avatar_url);
+        } else {
+          const { data: { publicUrl } } = supabase.storage.from("avatars").getPublicUrl(contextProfile.avatar_url);
+          setAvatarUrl(publicUrl);
         }
       }
-    });
-  }, [user]);
+    }
+  }, [contextProfile]);
 
   const handleSave = async () => {
     if (!user) return;
+    
+    // Fake name validation
+    const fakeNames = ["anon", "anonymous", "user", "fake", "test", "none", "unknown", "admin", "null", "undefined"];
+    const nameLower = displayName.toLowerCase().trim();
+    const userLower = username.toLowerCase().trim();
+    
+    if (!nameLower || nameLower.length < 2) {
+      toast({ title: "Invalid Name", description: "Please enter your real name.", variant: "destructive" });
+      return;
+    }
+    
+    if (fakeNames.includes(nameLower)) {
+      toast({ title: "No Fake Names", description: "Please use your real identity. Fake names are not allowed.", variant: "destructive" });
+      return;
+    }
+
+    if (userLower && fakeNames.includes(userLower)) {
+      toast({ title: "Invalid Username", description: "This username is not allowed.", variant: "destructive" });
+      return;
+    }
+
     setSaving(true);
     const { error } = await supabase.from("profiles").update({
-      display_name: displayName,
-      username: username || null,
-      phone: phone || null,
+      display_name: displayName.trim(),
+      username: username ? username.trim() : null,
+      phone: phone.trim() || null,
     }).eq("user_id", user.id);
 
     if (error) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
     } else {
+      await refreshProfile();
       toast({ title: "Profile updated!" });
     }
     setSaving(false);
@@ -134,12 +152,17 @@ const ProfilePage = () => {
 
       <div className="space-y-4 mb-8">
         <div>
-          <Label>Display name</Label>
-          <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} maxLength={50} />
+          <Label>Full Name</Label>
+          <Input value={displayName} onChange={(e) => setDisplayName(e.target.value)} maxLength={50} placeholder="Your legal name" />
+          <p className="text-[10px] text-muted-foreground mt-1 ml-1">Use your official name. Fake names are not allowed.</p>
         </div>
         <div>
           <Label>Username</Label>
-          <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Optional" maxLength={30} />
+          <div className="relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">@</span>
+            <Input className="pl-7" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" maxLength={30} />
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-1 ml-1">This is how you appear on the network.</p>
         </div>
         <div>
           <Label>Phone</Label>
@@ -149,7 +172,7 @@ const ProfilePage = () => {
         <div className="pt-2">
           <Label className="text-muted-foreground opacity-70">LPU Registration Number</Label>
           <div className="h-11 flex items-center px-4 bg-muted/30 border border-border/40 rounded-xl text-foreground/60 font-mono text-sm">
-            {user?.user_metadata?.registration_number || "N/A"}
+            {(profile as any)?.registration_number || user?.user_metadata?.registration_number || "N/A"}
           </div>
           <p className="text-[10px] text-muted-foreground mt-1.5 ml-1">This is tied to your account for identity verification.</p>
         </div>

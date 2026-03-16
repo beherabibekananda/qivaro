@@ -128,6 +128,7 @@ export type Database = {
           display_name: string | null
           id: string
           phone: string | null
+          registration_number: string | null
           updated_at: string
           user_id: string
           username: string | null
@@ -138,6 +139,7 @@ export type Database = {
           display_name?: string | null
           id?: string
           phone?: string | null
+          registration_number?: string | null
           updated_at?: string
           user_id: string
           username?: string | null
@@ -148,6 +150,7 @@ export type Database = {
           display_name?: string | null
           id?: string
           phone?: string | null
+          registration_number?: string | null
           updated_at?: string
           user_id?: string
           username?: string | null
@@ -229,6 +232,10 @@ export type Database = {
           isOneToOne: false
           isSetofReturn: true
         }
+      }
+      get_email_by_registration_number: {
+        Args: { reg_number: string }
+        Returns: string
       }
     }
     Enums: {

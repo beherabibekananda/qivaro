@@ -5,6 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AnimatePresence } from "framer-motion";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import AppLayout from "@/components/AppLayout";
 import ScrollToTop from "@/components/ScrollToTop";
 import Auth from "@/pages/Auth";
@@ -18,13 +20,48 @@ import ProfilePage from "@/pages/ProfilePage";
 import NotificationsPage from "@/pages/NotificationsPage";
 import TermsPage from "@/pages/TermsPage";
 import NotFound from "./pages/NotFound";
+import CompleteProfile from "@/pages/CompleteProfile";
 
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, loading } = useAuth();
-  if (loading) return <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">Loading...</div>;
+  const [checkingProfile, setCheckingProfile] = useState(true);
+  const [hasRegNumber, setHasRegNumber] = useState(false);
+
+  useEffect(() => {
+    if (loading || !user) {
+      setCheckingProfile(false);
+      return;
+    }
+
+    const check = async () => {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("registration_number")
+        .eq("user_id", user.id)
+        .single();
+
+      setHasRegNumber(!!profile?.registration_number);
+      setCheckingProfile(false);
+    };
+
+    check();
+  }, [user, loading]);
+
+  if (loading || checkingProfile) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">
+        Loading...
+      </div>
+    );
+  }
+
   if (!user) return <Navigate to="/auth" replace />;
+
+  // User is logged in but hasn't added registration number yet
+  if (!hasRegNumber) return <Navigate to="/complete-profile" replace />;
+
   return <AppLayout>{children}</AppLayout>;
 };
 
@@ -35,6 +72,38 @@ const AuthRoute = () => {
   return <Auth />;
 };
 
+const CompleteProfileRoute = () => {
+  const { user, loading } = useAuth();
+  const [checking, setChecking] = useState(true);
+  const [hasRegNumber, setHasRegNumber] = useState(false);
+
+  useEffect(() => {
+    if (loading || !user) {
+      setChecking(false);
+      return;
+    }
+
+    const check = async () => {
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("registration_number")
+        .eq("user_id", user.id)
+        .single();
+
+      setHasRegNumber(!!profile?.registration_number);
+      setChecking(false);
+    };
+
+    check();
+  }, [user, loading]);
+
+  if (loading || checking) return null;
+  if (!user) return <Navigate to="/auth" replace />;
+  if (hasRegNumber) return <Navigate to="/dashboard" replace />;
+
+  return <CompleteProfile />;
+};
+
 const AnimatedRoutes = () => {
   const location = useLocation();
   
@@ -42,6 +111,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/auth" element={<AuthRoute />} />
+        <Route path="/complete-profile" element={<CompleteProfileRoute />} />
         <Route path="/" element={<Index />} />
         <Route path="/dashboard" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/report/:type" element={<ProtectedRoute><ReportForm /></ProtectedRoute>} />
