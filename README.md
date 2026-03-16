@@ -1,38 +1,44 @@
-# Qivaro
+# Qivaro | Campus Lost & Found Network
 
-Qivaro is the premier Lost and Found network designed exclusively for Lovely Professional University. Built to seamlessly connect students who have lost valuable items with those who have found them.
+Qivaro is the premier, high-performance Lost and Found network designed exclusively for academic campuses. Built to seamlessly connect students who have lost valuable items with those who have found them using real-time matching technology.
+
+## Quick Links
+- Technical Specifications: [TECHNICAL_README.md](./TECHNICAL_README.md)
+- Platform Dashboard: [Local Preview](http://localhost:8080)
+- Security Overview: [Database Policies](./supabase/migrations/)
+
+## Key Features
+- AI-Driven Matching: Automated scoring system that identifies potential matches between lost and found items.
+- Student Verification: Secure onboarding using university registration numbers and departmental cross-referencing.
+- Modern PWA: Installable on both Android and iOS devices directly from the browser for a native-app experience.
+- Real-time Alerts: Instant notifications for match candidates and campus-wide alerts.
 
 ## Tech Stack
-- React 18
-- TypeScript
-- Vite
-- Tailwind CSS
-- shadcn/ui
-- Framer Motion
-- Supabase (Backend & Database)
+- Frontend: React 18, TypeScript, Vite, Tailwind CSS, Framer Motion.
+- Backend/DB: Supabase (PostgreSQL), PL/pgSQL Triggers, PostgREST.
+- Architecture: Serverless BaaS with Edge Optimization.
 
-## Quick Start
+## Development Setup
 
-1. Clone the repository
-2. Install dependencies:
+1. Install Dependencies:
    ```bash
    npm install
    ```
-3. Start the development server:
+
+2. Environment Configuration:
+   Create a .env file with your Supabase credentials:
+   ```env
+   VITE_SUPABASE_URL=your_project_url
+   VITE_SUPABASE_ANON_KEY=your_anon_key
+   ```
+
+3. Start Project:
    ```bash
    npm run dev
    ```
 
-## Environment Variables
-Create a `.env` file in the root of your project based on `.env.example`:
-```
-VITE_SUPABASE_URL=your-supabase-url
-VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
-```
+## Security
+The project implements Row Level Security (RLS). All database interactions are governed by server-side policies ensuring that student data is protected and private by default.
 
-## Features
-- **Modern Gen-Z Aesthetic**: Fast, beautiful, and fully responsive UI for mobile devices.
-- **Reporting System**: Distinct flows for dropping pins on found items vs seeking lost items.
-- **Matching Algorithm**: Quickly browse and filter the public dashboard.
-- **Progressive Web App**: Fully installable on iOS and Android from the browser.
-- **Secure Architecture**: Row Level Security explicitly configured to block public manipulation of active campus reports.
+Version: 1.0.0
+Project Owner: Bibekananda Behera

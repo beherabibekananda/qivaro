@@ -51,8 +51,11 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (loading || checkingProfile) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">
-        Loading...
+      <div className="fixed inset-0 z-[999] bg-background flex items-center justify-center text-muted-foreground">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          <p className="font-medium animate-pulse">Initializing Qivaro...</p>
+        </div>
       </div>
     );
   }
@@ -67,7 +70,13 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 
 const AuthRoute = () => {
   const { user, loading } = useAuth();
-  if (loading) return null;
+  if (loading) {
+    return (
+      <div className="fixed inset-0 z-[999] bg-background flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
   if (user) return <Navigate to="/dashboard" replace />;
   return <Auth />;
 };
@@ -97,7 +106,13 @@ const CompleteProfileRoute = () => {
     check();
   }, [user, loading]);
 
-  if (loading || checking) return null;
+  if (loading || checking) {
+    return (
+      <div className="fixed inset-0 z-[999] bg-background flex items-center justify-center text-muted-foreground">
+         <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
   if (!user) return <Navigate to="/auth" replace />;
   if (hasRegNumber) return <Navigate to="/dashboard" replace />;
 

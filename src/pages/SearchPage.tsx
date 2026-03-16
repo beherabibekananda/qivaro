@@ -128,6 +128,15 @@ const SearchPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query]);
+
   useEffect(() => {
     const categoryParam = searchParams.get("category");
     if (categoryParam) {
@@ -165,8 +174,8 @@ const SearchPage = () => {
         }
       }
 
-      if (query.trim()) {
-        q = q.or(`title.ilike.%${query}%,description.ilike.%${query}%`);
+      if (debouncedQuery.trim()) {
+        q = q.or(`title.ilike.%${debouncedQuery}%,description.ilike.%${debouncedQuery}%`);
       }
 
       const { data } = await q.limit(50);
@@ -174,7 +183,7 @@ const SearchPage = () => {
     };
 
     fetchReports();
-  }, [query, selectedCategory, selectedSubcategory, typeFilter, sortBy]);
+  }, [debouncedQuery, selectedCategory, selectedSubcategory, typeFilter, sortBy]);
 
   const handleSubcategoryClick = (subName: string) => {
     setSelectedSubcategory(subName === selectedSubcategory ? null : subName);
@@ -186,7 +195,7 @@ const SearchPage = () => {
       <motion.div 
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="px-4 pt-6 pb-4 sticky top-0 bg-background/80 backdrop-blur-md z-40 border-b border-border/40"
+        className="px-4 pt-6 pb-4 sticky top-0 bg-background/80 backdrop-blur-lg z-40 border-b border-border/40"
       >
         <h1 className="font-display text-2xl font-bold mb-4 text-foreground tracking-tight">Search Items</h1>
         

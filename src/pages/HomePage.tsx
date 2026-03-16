@@ -77,10 +77,10 @@ const HomePage = () => {
       variants={containerVariants}
       className="px-5 pt-12 pb-32 max-w-2xl mx-auto relative min-h-screen overflow-hidden bg-background"
     >
-      {/* GenZ Ambient Glowing Orbs */}
-      <div className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-primary/20 rounded-full blur-[100px] pointer-events-none animate-pulse" />
-      <div className="absolute top-[30%] right-[-20%] w-[50vw] h-[50vw] bg-accent/15 rounded-full blur-[120px] pointer-events-none" style={{ animation: "pulse 4s infinite alternate" }} />
-      <div className="absolute bottom-[-10%] left-[20%] w-[40vw] h-[40vw] bg-purple-500/15 rounded-full blur-[100px] pointer-events-none" />
+      {/* Optimized Ambient Orbs */}
+      <div className="absolute top-[-5%] left-[-5%] w-[40vw] h-[40vw] bg-primary/10 rounded-full blur-[60px] pointer-events-none" />
+      <div className="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] bg-accent/10 rounded-full blur-[80px] pointer-events-none" style={{ animation: "pulse 6s infinite alternate" }} />
+      <div className="absolute bottom-[-10%] left-[10%] w-[40vw] h-[40vw] bg-purple-500/10 rounded-full blur-[60px] pointer-events-none" />
 
       {/* Noise Texture Overlay for GenZ Vibe */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
@@ -129,7 +129,7 @@ const HomePage = () => {
             whileHover={{ scale: 0.98 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => navigate('/search')}
-            className="col-span-2 relative overflow-hidden group p-6 rounded-[2rem] bg-gradient-to-br from-card to-card/50 backdrop-blur-xl border border-border shadow-[0_8px_32px_rgba(0,0,0,0.05)] flex items-center justify-between"
+            className="col-span-2 relative overflow-hidden group p-6 rounded-[2rem] bg-gradient-to-br from-card to-card/50 backdrop-blur-lg border border-border shadow-[0_8px_32px_rgba(0,0,0,0.05)] flex items-center justify-between"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <div className="text-left relative z-10">
@@ -147,7 +147,7 @@ const HomePage = () => {
              whileHover={{ scale: 0.95 }}
              whileTap={{ scale: 0.92 }}
              onClick={() => navigate('/report/lost')}
-             className="relative p-6 rounded-[2rem] bg-card/50 backdrop-blur-xl border border-warning/20 overflow-hidden text-left flex flex-col justify-between aspect-square group shadow-sm"
+             className="relative p-6 rounded-[2rem] bg-card/50 backdrop-blur-lg border border-warning/20 overflow-hidden text-left flex flex-col justify-between aspect-square group shadow-sm"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-warning/20 rounded-full blur-[40px] group-hover:bg-warning/30 transition-colors" />
             <div className="w-12 h-12 rounded-2xl bg-warning/20 text-warning flex items-center justify-center mb-4 relative z-10">
@@ -164,7 +164,7 @@ const HomePage = () => {
              whileHover={{ scale: 0.95 }}
              whileTap={{ scale: 0.92 }}
              onClick={() => navigate('/report/found')}
-             className="relative p-6 rounded-[2rem] bg-card/50 backdrop-blur-xl border border-accent/20 overflow-hidden text-left flex flex-col justify-between aspect-square group shadow-sm"
+             className="relative p-6 rounded-[2rem] bg-card/50 backdrop-blur-lg border border-accent/20 overflow-hidden text-left flex flex-col justify-between aspect-square group shadow-sm"
           >
             <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent/20 rounded-full blur-[40px] group-hover:bg-accent/30 transition-colors" />
             <div className="w-12 h-12 rounded-2xl bg-accent/20 text-accent flex items-center justify-center mb-4 relative z-10">
@@ -199,7 +199,7 @@ const HomePage = () => {
         <motion.div variants={itemVariants}>
           <button 
             onClick={() => navigate('/my-reports')}
-            className="w-full relative overflow-hidden rounded-[2rem] p-6 bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 group shadow-[var(--gentle-shadow)]"
+            className="w-full relative overflow-hidden rounded-[2rem] p-6 bg-white/40 dark:bg-black/40 backdrop-blur-lg border border-white/50 dark:border-white/10 group shadow-[var(--gentle-shadow)]"
           >
              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-accent/10 opacity-50 group-hover:opacity-100 transition-opacity duration-500" />
              <div className="relative z-10 flex items-center justify-between">

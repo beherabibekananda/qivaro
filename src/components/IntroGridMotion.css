@@ -30,7 +30,8 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 2vw;
-    will-change: transform, filter;
+    will-change: transform;
+    transform-style: preserve-3d;
 }
 
 .grid__item {
@@ -83,9 +84,9 @@
     align-items: center;
     justify-content: center;
     z-index: 20;
-    background: radial-gradient(circle at center, hsl(var(--background) / 0.95) 15%, hsl(var(--background) / 0.6) 40%, transparent 80%);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    background: radial-gradient(circle at center, hsl(var(--background) / 0.8) 0%, hsl(var(--background) / 0.4) 100%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     pointer-events: none;
 }
 

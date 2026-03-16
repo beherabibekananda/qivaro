@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { gsap, Flip } from 'gsap/all';
 import { motion, AnimatePresence } from 'framer-motion';
 import './IntroGridMotion.css';
@@ -48,6 +49,7 @@ const IntroGridMotion = () => {
     const contentRef = useRef<HTMLDivElement>(null);
     const middleItemRef = useRef<HTMLDivElement>(null);
     const [isExplored, setIsExplored] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const grid = gridRef.current;
@@ -83,11 +85,15 @@ const IntroGridMotion = () => {
                 state.x = lerp(state.x, targetX, state.amt);
                 state.y = lerp(state.y, targetY, state.amt);
                 
+                const rotateX = (mouse.y - 0.5) * 5;
+                const rotateY = (mouse.x - 0.5) * 5;
+                
                 gsap.set(row, {
                     x: state.x,
                     y: state.y,
-                    skewX: state.x * 0.1,
-                    filter: `brightness(${1 + Math.abs(state.x) * 0.005}) contrast(${1 + Math.abs(state.y) * 0.005})`
+                    rotateX: rotateX,
+                    rotateY: rotateY,
+                    overwrite: 'auto'
                 });
             });
 
@@ -184,7 +190,7 @@ const IntroGridMotion = () => {
         if (currentStep < steps.length - 1) {
             setCurrentStep(currentStep + 1);
         } else {
-            window.location.href = '/dashboard';
+            navigate('/dashboard');
         }
     };
 
@@ -245,13 +251,13 @@ const IntroGridMotion = () => {
 
                     <div className="relative overflow-hidden flex-1 w-full max-w-md mx-auto flex flex-col justify-center min-h-0 pb-4 md:pb-8">
                         <AnimatePresence mode="wait">
-                            <motion.div 
+                                <motion.div 
                                 key={currentStep}
-                                initial={{ opacity: 0, scale: 0.95 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.5, ease: "easeOut" }}
-                                className="step-content bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 rounded-[2rem] p-5 sm:p-6 md:p-10 shadow-sm relative flex flex-col w-full h-fit max-h-full overflow-y-auto no-scrollbar"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                transition={{ duration: 0.4, ease: "easeOut" }}
+                                className="step-content bg-white/60 dark:bg-black/60 backdrop-blur-lg border border-white/50 dark:border-white/10 rounded-[2rem] p-5 sm:p-6 md:p-10 shadow-sm relative flex flex-col w-full h-fit max-h-full overflow-y-auto no-scrollbar"
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent dark:from-white/5 pointer-events-none" />
                                 
